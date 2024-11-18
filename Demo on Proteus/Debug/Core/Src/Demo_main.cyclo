@@ -1,0 +1,14 @@
+../Core/Src/Demo_main.c:107:11:Reset_LCD	1
+../Core/Src/Demo_main.c:78:5:main	1
+../Core/Src/Demo_main.c:125:9:Read_Keypad	2
+../Core/Src/Demo_main.c:133:9:Default_Change_Screen	1
+../Core/Src/Demo_main.c:148:9:Read_OldPass	2
+../Core/Src/Demo_main.c:155:9:Enter_Old_Passcode	2
+../Core/Src/Demo_main.c:163:9:Change_Passcode	1
+../Core/Src/Demo_main.c:170:9:Check_Old_Passcode	6
+../Core/Src/Demo_main.c:203:9:Xu_Ly_Mat_Khau	7
+../Core/Src/Demo_main.c:274:8:KeyPad	35
+../Core/Src/Demo_main.c:490:6:SystemClock_Config	3
+../Core/Src/Demo_main.c:530:13:MX_TIM2_Init	5
+../Core/Src/Demo_main.c:582:13:MX_GPIO_Init	1
+../Core/Src/Demo_main.c:640:6:Error_Handler	1
