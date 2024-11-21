@@ -23,7 +23,11 @@
 /* USER CODE BEGIN Includes */
 #include "LCD.h"
 #include "string.h"
+#include "flash.h"
+/* USER CODE END Includes */
 
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
 uint8_t enter_passcode[6];  // Array is used to compare with passcode.
 uint8_t passcode[6] = {1, 2, 3, 4, 5, 6};  // Default passcode.
 uint8_t new_passcode[6];  // Array of values for enter new passcode.
@@ -35,15 +39,12 @@ uint8_t False_Passcode = 3;
 uint8_t Check_Mode = 0; // Check change mode or enter mode. Check_Mode = 0 => Enter mode.
 int flag_new_pass = 0;
 int flag_announce_success = 0;
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define Flash_save_pass ((uint8_t)0x08007C04)
+
 
 /* USER CODE END PD */
 
@@ -71,6 +72,7 @@ void Change_Passcode();
 void Default_Change_Screen();
 void Check_Old_Passcode();
 void Xu_Ly_Mat_Khau();
+void Save_new_pass();
 int KeyPad();
 /* USER CODE END PFP */
 
@@ -96,7 +98,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  Flash_Read_Array(Flash_save_pass, new_passcode , sizeof(new_passcode));
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -110,11 +112,8 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  Reset_LCD();
 
-
-
-
-	  Reset_LCD();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -122,7 +121,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
    KeyPad();
   }
@@ -279,7 +277,10 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 //------------------------------------------------
 // RESTART WITH LCD.
-     void Reset_LCD(){   //DEFAULT SCREEN.
+     void Reset_LCD()
+     {
+    //DEFAULT SCREEN.
+       LCD_Clear();
        x = 1 ;
        y = 9 ;
        LCD_Init();
@@ -295,117 +296,140 @@ static void MX_GPIO_Init(void)
         y = 9 ;
         Check_Mode = 0;
      }
-     // WRITE DATA TO ARRAY.
-     	  void Read_Keypad(int key){
-     	  	if(count < 6){
-     	  	    enter_passcode[count] = key;
-     	  	    if(flag_new_pass)
-     	  	    {
-     	  	    	passcode[count]=key;
-     	  	    	if(count==5)
-     	  	    		flag_new_pass=0;
-     	  	    	    flag_announce_success = 1;
+     // WRITE DATA in ARRAY.
+     void Read_Keypad(int key)
+     {
+         if(count < 6)
+     	 {
+     	  	 enter_passcode[count] = key;
 
-     	  	    }
-     	  	    count++;
+     	  	 if(flag_new_pass)
+     	  	 {
+     	  	     passcode[count]=key;
+     	  	     if(count==5)
+     	  	     {
+     	  	    	flag_new_pass = 0;
+     	  	     }
+
      	  	 }
-     	  }
-     	 //--------------------------------------------
-     	 	  // Change passcode if need.
-     	 	  void Default_Change_Screen(){
-     	 		  //Initial.
-     	 		  Check_Mode = 1;
-     	 		  count = 0;
-     	 		  LCD_Clear();
-     	 		  LCD_Print("Waiting...");
-     	 		  LCD_DisableCursorBlink();
-     	 		  HAL_Delay(1000);
-     	 		  LCD_Clear();
-     	 		  LCD_SetCursor(0,0);
-     	 		  LCD_Print("Enter Old Pass");
-     	 		  LCD_SetCursor(1,1);
-     	 		  LCD_Print("=>");
-     	 		  LCD_CursorBlink();
-     	 	  }
-     	 	  void Change_Passcode(){
-     	 		  Default_Change_Screen();
-                  x = 1;
-                  y = 3;
-     	 	  }
-     	 	  //--------------------------------------------
-     	 	  // CHECK OLD PASSCODE.
-     	 	  void Check_Old_Passcode(){
-     	 		  check_old = 1;
-     	 		  for(int i = 0; i < 6; i++){
-     	 		  	 if(passcode[i] != enter_passcode[i]){
-     	 		  	    check_old  =  0;
-     	 		  	  	break;
-     	 		  	 }else if(count < 5 || count > 6){
-     	 		  	  	   check_old = 0;
-     	 		  	  	   break;
-     	 		      }else {
-     	 		    	   check_old = 1;
-     	 		      }
-     	 		  }
-     	 		  if(check_old != 1){
-     	 			LCD_Clear();
-     	 			LCD_SetCursor(0,1);
-     	 			LCD_Print("FALSE,");
-     	 			LCD_SetCursor(1,1);
-     	 			LCD_Print("PLEASE AGAIN !");
-     	 			LCD_DisableCursorBlink();
-     	 			HAL_Delay(1500);
-     	 			Change_Passcode();
-     	 		  }else{
-     	 			  LCD_Clear();
-     	 			  LCD_SetCursor(0,1);
-     	 			  LCD_Print("Enter New Pass");
-     	 			  LCD_SetCursor(1,1);
-     	 			  LCD_Print("=>");
-     	 			  x = 1; y = 3;
-     	 			  flag_new_pass=1;
-     	 		   }
-     	 	  }
-              void Screen_Success(){
-            	  LCD_Clear();
-            	  LCD_SetCursor(0,1);
-            	  LCD_Print("Waiting...");
-            	  HAL_Delay(300);
-            	  LCD_Clear();
-            	  LCD_SetCursor(0,1);
-            	  LCD_Print("SUCESSFUL !!");
-            	  HAL_Delay(300);
-            	  Reset_LCD();
-              }
-     	 	  //---------------------------------------------
-     	 	  //CHECK PASSCODE to OPEN THE DOOR.
-     	 	  void Xu_Ly_Mat_Khau(){
-     	 		  check = 1;
-     	 	  	for(int i = 0; i < 6; i++){
-     	 	  	  if(passcode[i] != enter_passcode[i]){
-     	 	  		check  =  0;
-     	 	  		break;
-     	 	  		}if(count < 5 || count > 6){
+     	  	    count++;
+     	 }
+     }
+
+     //--------------------------------------------
+     // Change passcode if need.
+     void Default_Change_Screen()
+     {
+         //Initial.
+         Check_Mode = 1;
+         count = 0;
+         LCD_Clear();
+         LCD_Print("Waiting...");
+         LCD_DisableCursorBlink();
+         HAL_Delay(1000);
+     	 LCD_Clear();
+     	 LCD_SetCursor(0,1);
+     	 LCD_Print("Enter Old Pass");
+     	 LCD_SetCursor(1,0);
+     	 LCD_Print("=>");
+     	 LCD_CursorBlink();
+     }
+     void Change_Passcode()
+     {
+     	 Default_Change_Screen();
+         x = 1;
+         y = 2;
+     }
+     //--------------------------------------------
+     // CHECK OLD PASSCODE.
+     void Check_Old_Passcode()
+     {
+     	 check_old = 1;
+     	 for(int i = 0; i < 6; i++)
+     	 {
+     	 	 if(passcode[i] != enter_passcode[i])
+     	 	 {
+     	 		 check_old  =  0;
+     	 		 break;
+     	 	 }
+     	 	 else if(count < 5 || count > 6)
+     	 	 {
+     	 		 check_old = 0;
+     	 		 break;
+     	 	 }
+     	 	 else
+     	 	 {
+     	 		 check_old = 1;
+     	 	 }
+     	 }
+     	 if(check_old != 1)
+     	 {
+     		 LCD_Clear();
+     		 LCD_SetCursor(0,1);
+     		 LCD_Print("FALSE,");
+     		 LCD_SetCursor(1,1);
+     		 LCD_Print("PLEASE AGAIN !");
+     		 LCD_DisableCursorBlink();
+     		 HAL_Delay(1500);
+     		 Change_Passcode();
+     	 }
+     	 else
+     	 {
+     		 LCD_Clear();
+     		 LCD_SetCursor(0,1);
+     		 LCD_Print("Enter New Pass");
+     		 LCD_SetCursor(1,0);
+     		 LCD_Print("=>");
+     		 x = 1; y = 2;
+     		 flag_new_pass = 1;
+     	 }
+     }
+
+     void Screen_Success()
+     {
+         LCD_Clear();
+         LCD_SetCursor(0,1);
+         LCD_Print("Waiting...");
+         HAL_Delay(300);
+         LCD_Clear();
+         LCD_SetCursor(0,1);
+         LCD_Print("SUCESSFUL !!");
+         HAL_Delay(300);
+     }
+     //---------------------------------------------
+     //CHECK PASSCODE to OPEN THE DOOR.
+     void Xu_Ly_Mat_Khau()
+     {
+     	 check = 1;
+     	 for(int i = 0; i < 6; i++)
+     	 {
+     	 	 if(passcode[i] != enter_passcode[i])
+     	 	 {
+     	 	  	check  =  0;
+     	 	  	break;
+     	 	  	}if(count < 5 || count > 6){
      	 	  		   check = 0;
      	 	  		   break;
      	 	  		   }
-     	 	  	}
-     	 	  	//IF PASSCODE FALSE => ANNOUNCE AND CLOSE THE DOOR.
-     	 	  	if(check != 1){
+     	 }
+     	  //IF PASSCODE FALSE => ANNOUNCE AND CLOSE THE DOOR.
+     	 if(check != 1)
+     	 {
      	 	  		LCD_Clear();
-     	 	  		GPIOB -> BSRR = (1 << 11);
-     	 	  		GPIOA -> BSRR = (1 << 2);
+     	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 1);
+     	 	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 1);
      	 	  	    HAL_Delay(500);
-     	 	  		GPIOA -> BSRR = (1 << 18);
+     	 	  	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 0);
      	 	  	    LCD_SetCursor(0, 5);
      	 	  	    LCD_Print("FAIL,");
      	 	  		LCD_SetCursor(1, 1);
      	 	  		LCD_Print("PLEASE AGAIN!");
      	 	  		LCD_DisableCursorBlink();
      	 	  		HAL_Delay(1000);
-     	 	  		GPIOB -> BSRR = (1 << 27);
+     	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 0);
      	 	  		False_Passcode--;
-     	 	  		if(False_Passcode == 0){
+     	 	  		if(False_Passcode == 0)
+     	 	  		{
      	 	  			LCD_Clear();
      	 	  			LCD_SetCursor(0, 0);
      	 	  		    LCD_Print("WAITING FOR 30s");
@@ -415,25 +439,26 @@ static void MX_GPIO_Init(void)
      	 	   		Reset_LCD();
      	 	  	}
      	 	  	//IF PASSCODE TRUE => OPEN THE DOOR.
-     	 	  	else{
+     	 	  	else
+     	 	  	{
      	 	  		//turn on green LED.
-     	 	  		GPIOB -> BSRR = (1 << 10);
+     	 	  	    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
      	 	  		//Turn on sound open a door
-     	 	  		GPIOA -> BSRR = (1 << 2);
+     	 	        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
      	 	  		HAL_Delay(100);
-     	 	  		GPIOA -> BSRR = (1 << 18);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
      	 	  		HAL_Delay(100);
-     	 	  		GPIOA -> BSRR = (1 << 2);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
      	 	  	    HAL_Delay(100);
-     	 	  	    GPIOA -> BSRR = (1 << 18);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
      	 	  	    HAL_Delay(100);
-     	 	  	    GPIOA -> BSRR = (1 << 2);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
      	 	  	  	HAL_Delay(100);
-     	 	  	  	GPIOA -> BSRR = (1 << 18);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
      	 	  	    HAL_Delay(100);
-     	 	  	  	GPIOA -> BSRR = (1 << 2);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
      	 	  	  	HAL_Delay(100);
-     	 	  	  	GPIOA -> BSRR = (1 << 18);
+     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
      	 	  	    //Announce open the door.
      	 	  		LCD_Clear();
      	 	  		LCD_SetCursor(0, 2);
@@ -449,207 +474,244 @@ static void MX_GPIO_Init(void)
      	 	  		Reset_LCD();
      	 	  	}
      	 	  }
-     	 	  //-----CHECK KEYPAD-----------------------------------------------
-     	 	  int KeyPad(){
-     	 		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_8, 1);
-     	 		  	  //SCAN COLUMN 1.
-     	 		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, 0);
-     	 		  	  GPIOB -> BSRR = (1 << 16);
-     	 		  	  GPIOB -> BSRR = (1 << 1)|(1 << 2)|(1 << 3);
-     	 		  	  // NUMBER 7 BUTTON.
-     	 		        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		      	  HAL_Delay(200);
-     	 		      	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		      	     LCD_SetCursor(x, y);
-     	 		      	     LCD_CursorBlink();
-     	 		      	     LCD_Print("7");
-     	 		      	      key = 7;
-     	 		      	      Read_Keypad(key);
-     	 		      	     y = y + 1;
-     	 		      	     }
-     	 		        }
-     	 		        // NUMBER 4 BUTTON.
-     	 		        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		      	  HAL_Delay(130);
-     	 		      	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		      	     LCD_SetCursor(x, y);
-     	 		      	     LCD_CursorBlink();
-     	 		      	     LCD_Print("4");
-     	 		      	     key = 4;
-     	 		      	     Read_Keypad(key);
-     	 		      	     y = y + 1;
-     	 		      	     }
-     	 		        }
-     	 		        // NUMBER 1 BUTTON.
-     	 		        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		      	  HAL_Delay(130);
-     	 		      	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		      		 LCD_SetCursor(x, y);
-     	 		      		 LCD_CursorBlink();
-     	 		      		 LCD_Print("1");
-     	 		      		  key = 1;
-     	 		      		  Read_Keypad(key);
-     	 		      		 y = y + 1;
-     	 		      		 }
-     	 		        }
-     	 		        // SYMBOL "*" BUTTON.
-     	 		        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		      	   HAL_Delay(130);
-     	 		      	   if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		      	      LCD_SetCursor(x, y);
-     	 		      	      LCD_CursorBlink();
-     	 		      	      LCD_Print("*");
-     	 		      	      y = y + 1;
-     	 		      	      }
-     	 		        }
-     	 		        // SCAN COLUMN 2.
-     	 		        GPIOB -> BSRR = (1 << 17);
-     	 		        GPIOB -> BSRR = (1 << 0)|(1 << 2)|(1 << 3);
-     	 		        // NUMBER 8 BUTTON.
-     	 		        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		           HAL_Delay(130);
-     	 		           if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		            	LCD_SetCursor(x, y);
-     	 		            	LCD_CursorBlink();
-     	 		              LCD_Print("8");
-     	 		              key = 8;
-     	 		              Read_Keypad(key);
-     	 		            	y = y + 1;
-     	 		            	}
-     	 		          }
-     	 		        // NUMBER 5 BUTTON.
-     	 		        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		            	 HAL_Delay(130);
-     	 		            	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		            	    LCD_SetCursor(x, y);
-     	 		            	    LCD_CursorBlink();
-     	 		            	    LCD_Print("5");
-     	 		            	    key = 5;
-     	 		            	    Read_Keypad(key);
-     	 		            	    y = y + 1;
-     	 		            	    }
-     	 		           }
-     	 		        // NUMBER 2 BUTTON.
-     	 		        if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		               HAL_Delay(130);
-     	 		               if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		                  LCD_SetCursor(x, y);
-     	 		                  LCD_CursorBlink();
-     	 		                  LCD_Print("2");
-     	 		                   key = 2;
-     	 		                   Read_Keypad(key);
-     	 		                  y = y + 1;
-     	 		            	    }
-     	 		           }
-     	 		        // NUMBER 0 BUTTON.
-     	 		        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		            	  HAL_Delay(130);
-     	 		            	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		            	     LCD_SetCursor(x, y);
-     	 		            	     LCD_CursorBlink();
-     	 		            	     LCD_Print("0");
-     	 		            	      key = 0;
-     	 		            	    Read_Keypad(key);
-     	 		            	     y = y + 1;
-     	 		            	     }
-     	 		             }
-     	 		         // SCAN COLUMN 3.
-     	 		         GPIOB -> BSRR = (1 << 24);
-     	 		         GPIOB -> BSRR = (1 << 0)|(1 << 1)|(1 << 3);
-     	 		         // NUMBER 9 BUTTON.
-     	 		         if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		            HAL_Delay(130);
-     	 		            if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		            	 LCD_SetCursor(x, y);
-     	 		            	 LCD_CursorBlink();
-     	 		            	 LCD_Print("9");
-     	 		            	  key = 9;
-     	 		            	Read_Keypad(key);
-     	 		            	 y = y + 1;
-     	 		            	 }
-     	 		            }
-     	 		         // NUMBER 6 BUTTON.
-     	 		         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		             HAL_Delay(70);
-     	 		             if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		                LCD_SetCursor(x, y);
-     	 		                LCD_CursorBlink();
-     	 		                LCD_Print("6");
-     	 		                key = 6;
-     	 		                Read_Keypad(key);
-     	 		                y = y + 1;
-     	 		                }
-     	 		             }
-     	 		          // NUMBER 3 BUTTON.
-     	 		         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		             HAL_Delay(60);
-     	 		             if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		                LCD_SetCursor(x, y);
-     	 		                LCD_CursorBlink();
-     	 		                LCD_Print("3");
-     	 		                key = 3;
-     	 		                Read_Keypad(key);
-     	 		                y = y + 1;
-     	 		                }
-     	 		             }
-     	 		          // SYMBOL "#" BUTTON.
-     	 		          if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		            	HAL_Delay(130);
-     	 		              if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		            	   LCD_SetCursor(x, y);
-     	 		            	   LCD_CursorBlink();
-     	 		            	   LCD_Print("#");
-     	 		            	   y = y + 1;
-     	 		            	   }
-     	 		           }
-     	 		          // SCAN COLUMN 4, THAT IS FUNCTION BUTTON.
-     	 		          GPIOB -> BSRR = (1 << 19);
-     	 		          GPIOB -> BSRR = (1 << 0)|(1 << 1)|(1 << 2);
+     //CHECK KEYPAD-----------------------------------------------
+     int KeyPad()
+     {
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_8, 1);
+    	 //SCAN COLUMN 1.
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, 0);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_8|GPIO_PIN_3, 1);
+    	 // NUMBER 7 BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("7");
+    			 key = 7;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    	 }
+    	 }
+    	 // NUMBER 4 BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("4");
+    			 key = 4;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
 
-     	 		          // ENTER FUNCTION BUTTON.
-     	 		          if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		             HAL_Delay(130);
-     	 		             if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0){
-     	 		          	   if(Check_Mode == 1){
-     	 		          		   Check_Old_Passcode();
-     	 		          	   }if(Check_Mode == 0){
-     	 		          		   Xu_Ly_Mat_Khau();
-     	 		          	    }if(Check_Mode == 2){
-     	 		          	   }if(flag_announce_success)
-     	 		          	   {
-     	 		          		   Screen_Success();
-     	 		          	   }
-     	 		                }
-     	 		          }
-     	 		          // DELETE FUNCTION BUTTON.
-     	 		          if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		             HAL_Delay(130);
-     	 		             if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0){
-     	 		                y = y - 1;
+    	 // NUMBER 1 BUTTON.
 
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    	 {
+    		 HAL_Delay(100);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("1");
+    			 key = 1;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // SYMBOL "*" BUTTON.
+    	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("*");
+    			 y = y + 1;
+    		 }
+    	 }
+    	 //------------------------------------------------------------
+    	 // SCAN COLUMN 2
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, 0);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_3, 1);
+    	 // NUMBER 8 BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("8");
+    			 key = 8;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // NUMBER 5 BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("5");
+    			 key = 5;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // NUMBER 2 BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("2");
+    			 key = 2;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // NUMBER 0 BUTTON.
+    	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    	 {
+    		 HAL_Delay(100);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("0");
+    			 key = 0;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 //-------------------------------------------------------------
+    	 // SCAN COLUMN 3.
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3, 1);
+    	 // NUMBER 9 BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    	 {
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("9");
+    			 key = 9;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // NUMBER 6 BUTTON.
+    	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("6");
+    			 key = 6;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // NUMBER 3 BUTTON.
+    	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("3");
+    			 key = 3;
+    			 Read_Keypad(key);
+    			 y = y + 1;
+    		 }
+    	 }
+    	 // SYMBOL "#" BUTTON.
+    	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    		 {
+    			 LCD_SetCursor(x, y);
+    			 LCD_CursorBlink();
+    			 LCD_Print("#");
+    			 y = y + 1;
+    		 }
+    	 }
+    	 //-------------------------------------------------------------
+    	 // SCAN COLUMN 4, IT'S FUNCTION BUTTON.
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_8	, 1);
+    	 // ENTER FUNCTION BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    		 {
+    			 if(Check_Mode == 0)
+    			 {
+    				 Xu_Ly_Mat_Khau();
+    			 }
+    			 if(Check_Mode == 1)
+    			 {
+    				 Check_Old_Passcode();
+    			 }
+    			 if(Check_Mode == 3)
+    			 {
+    				 Screen_Success();
+    			 }
+    		 }
+    	 }
+    	 // DELETE FUNCTION BUTTON
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
+    		 {
+    			 y = y - 1;
+    			 LCD_CursorBlink();
+    			 LCD_Print(" ");
+    			 LCD_SetCursor(x, y);
+    			 count--;
+    		 }
+    	 }
+    	 //CHANGE FUNCTION BUTTON.
+    	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    		 {
+    			 Change_Passcode();
+    		 }
+    	 }
+    	 // RETURN DEFAULT SCREEN WHEN BEGIN.
+    	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    	 {
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
+    		 {
+    			 Reset_LCD();
+    		 }
+    	 }
+    	 return key;
+     }
 
-     	 		                LCD_CursorBlink();
-     	 		                LCD_Print(" ");
-     	 		                LCD_SetCursor(x, y);
-     	 		                count--;
-     	 		                }
-     	 		             }
-     	 		             //CHANGE FUNCTION BUTTON.
-     	 		             if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		                HAL_Delay(100);
-     	 		                if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
-     	 		                  Change_Passcode();
-     	 		                }
-     	 		             }
-     	 		             // RETURN DEFAULT SCREEN WHEN BEGIN.
-     	 		             if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		                 HAL_Delay(130);
-     	 		                 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0){
-     	 		              	  Reset_LCD();
-     	 		                    }
-     	 		                 }
-     	                    return key;
-     	 	  }
 /* USER CODE END 4 */
 
 /**
