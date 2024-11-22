@@ -43,8 +43,8 @@ int flag_announce_success = 0;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define Flash_save_pass ((uint8_t)0x08007C00)
-
+#define Flash_save_pass 0x08007C3C
+#define Address_passcode 0x20000000
 
 /* USER CODE END PD */
 
@@ -57,7 +57,7 @@ int flag_announce_success = 0;
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
-uint8_t change_passcode_status=0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -99,7 +99,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  Flash_Read_Array(Flash_save_pass, new_passcode , 6);
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -393,8 +393,11 @@ static void MX_GPIO_Init(void)
      void Save_pass_to_flash()
      {
     	 Flash_Erase(Flash_save_pass);
-    	 Flash_Write_Array(Flash_save_pass, new_passcode, 6);
-    	 Flash_Read_Array(Flash_save_pass, new_passcode , 6);
+    	 Flash_Write_2Byte(Flash_save_pass, new_passcode);
+     }
+     void Read_pass_from_flash()
+     {
+
      }
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.

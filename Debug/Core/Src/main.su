@@ -8,6 +8,7 @@
 ../Core/Src/main.c:340:11:Change_Passcode	8	static
 ../Core/Src/main.c:348:11:Check_Old_Passcode	16	static
 ../Core/Src/main.c:393:11:Save_pass_to_flash	8	static
-../Core/Src/main.c:401:11:Xu_Ly_Mat_Khau	16	static
-../Core/Src/main.c:479:10:KeyPad	8	static
-../Core/Src/main.c:718:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:398:11:Read_pass_from_flash	4	static
+../Core/Src/main.c:404:11:Xu_Ly_Mat_Khau	16	static
+../Core/Src/main.c:482:10:KeyPad	8	static
+../Core/Src/main.c:721:6:Error_Handler	4	static,ignoring_inline_asm

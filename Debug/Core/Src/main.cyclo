@@ -8,6 +8,7 @@
 ../Core/Src/main.c:340:11:Change_Passcode	1
 ../Core/Src/main.c:348:11:Check_Old_Passcode	6
 ../Core/Src/main.c:393:11:Save_pass_to_flash	1
-../Core/Src/main.c:401:11:Xu_Ly_Mat_Khau	7
-../Core/Src/main.c:479:10:KeyPad	35
-../Core/Src/main.c:718:6:Error_Handler	1
+../Core/Src/main.c:398:11:Read_pass_from_flash	1
+../Core/Src/main.c:404:11:Xu_Ly_Mat_Khau	7
+../Core/Src/main.c:482:10:KeyPad	35
+../Core/Src/main.c:721:6:Error_Handler	1
