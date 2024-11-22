@@ -28,9 +28,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-uint8_t enter_passcode[6];  // Array is used to compare with passcode.
+uint8_t enter_passcode[6] = {0};  // Array is used to compare with passcode.
 uint8_t passcode[6] = {1, 2, 3, 4, 5, 6};  // Default passcode.
-uint8_t new_passcode[6];  // Array of values for enter new passcode.
+uint8_t new_passcode[6] = {0};  // Array of values for enter new passcode.
 uint8_t count = 0;    // Numerical order of passcode.
 uint8_t x = 1 ;  // variable x Cursor of LCD.
 uint8_t y = 9 ;  // Variable y Cursor of LCD.
@@ -43,7 +43,7 @@ int flag_announce_success = 0;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define Flash_save_pass ((uint8_t)0x08007C04)
+#define Flash_save_pass ((uint8_t)0x08007C00)
 
 
 /* USER CODE END PD */
@@ -74,6 +74,7 @@ void Check_Old_Passcode();
 void Xu_Ly_Mat_Khau();
 void Save_new_pass();
 int KeyPad();
+void Save_pass_to_flash();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -98,7 +99,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  Flash_Read_Array(Flash_save_pass, new_passcode , sizeof(new_passcode));
+  Flash_Read_Array(Flash_save_pass, new_passcode , 6);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -292,9 +293,9 @@ static void MX_GPIO_Init(void)
 	   LCD_SetCursor(1,9);
 	   LCD_CursorBlink();
 	   count = 0;
-    	x = 1 ;
-        y = 9 ;
-        Check_Mode = 0;
+       x = 1 ;
+       y = 9 ;
+       Check_Mode = 0;
      }
      // WRITE DATA in ARRAY.
      void Read_Keypad(int key)
@@ -308,8 +309,10 @@ static void MX_GPIO_Init(void)
      	  	     passcode[count]=key;
      	  	     if(count==5)
      	  	     {
+     	  	    	Save_pass_to_flash();
      	  	    	flag_new_pass = 0;
      	  	     }
+
 
      	  	 }
      	  	    count++;
@@ -381,20 +384,17 @@ static void MX_GPIO_Init(void)
      		 LCD_SetCursor(1,0);
      		 LCD_Print("=>");
      		 x = 1; y = 2;
+     		 count = 0;
      		 flag_new_pass = 1;
+
+
      	 }
      }
-
-     void Screen_Success()
+     void Save_pass_to_flash()
      {
-         LCD_Clear();
-         LCD_SetCursor(0,1);
-         LCD_Print("Waiting...");
-         HAL_Delay(300);
-         LCD_Clear();
-         LCD_SetCursor(0,1);
-         LCD_Print("SUCESSFUL !!");
-         HAL_Delay(300);
+    	 Flash_Erase(Flash_save_pass);
+    	 Flash_Write_Array(Flash_save_pass, new_passcode, 6);
+    	 Flash_Read_Array(Flash_save_pass, new_passcode , 6);
      }
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.
@@ -474,6 +474,7 @@ static void MX_GPIO_Init(void)
      	 	  		Reset_LCD();
      	 	  	}
      	 	  }
+
      //CHECK KEYPAD-----------------------------------------------
      int KeyPad()
      {
@@ -671,10 +672,6 @@ static void MX_GPIO_Init(void)
     			 if(Check_Mode == 1)
     			 {
     				 Check_Old_Passcode();
-    			 }
-    			 if(Check_Mode == 3)
-    			 {
-    				 Screen_Success();
     			 }
     		 }
     	 }
