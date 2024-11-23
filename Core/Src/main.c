@@ -29,23 +29,21 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 uint8_t enter_passcode[6] = {0};  // Array is used to compare with passcode.
-uint8_t passcode[6] = {1, 2, 3, 4, 5, 6};  // Default passcode.
+uint8_t passcode[6] = {1, 2, 3, 4, 5, 6};  // Default passcode when beginning restart system.
 uint8_t new_passcode[6] = {0};  // Array of values for enter new passcode.
 uint8_t count = 0;    // Numerical order of passcode.
 uint8_t x = 1 ;  // variable x Cursor of LCD.
 uint8_t y = 9 ;  // Variable y Cursor of LCD.
-uint8_t key, check, check_old;
-uint8_t False_Passcode = 3;
-uint8_t Check_Mode = 0; // Check change mode or enter mode. Check_Mode = 0 => Enter mode.
-int flag_new_pass = 0;
-int flag_announce_success = 0;
+uint8_t key, check, check_old;  // values in process.
+uint8_t False_Passcode = 3;  // You have 3 times to enter passcode.
+uint8_t Check_Mode = 0; // Check a change mode or enter mode. Check_Mode = 0 => Enter mode.
+uint8_t flag_new_pass = 0;  //
+uint8_t Change_flag = 0;
+uint8_t Value_check ;
 /* USER CODE END PTD */
-
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define Flash_save_pass 0x08007C3C
-#define Address_passcode 0x20000000
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -75,6 +73,7 @@ void Xu_Ly_Mat_Khau();
 void Save_new_pass();
 int KeyPad();
 void Save_pass_to_flash();
+void Read_pass_from_flash();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -113,8 +112,13 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  Value_check = Flash_Read_2Byte(Flash_save_pass);
+  if( Value_check != 255) // 255 is 0xFF value.
+  {
+	  Change_flag = 1;
+  }
+  Read_pass_from_flash();
   Reset_LCD();
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -280,7 +284,7 @@ static void MX_GPIO_Init(void)
 // RESTART WITH LCD.
      void Reset_LCD()
      {
-    //DEFAULT SCREEN.
+     //DEFAULT SCREEN.
        LCD_Clear();
        x = 1 ;
        y = 9 ;
@@ -303,22 +307,33 @@ static void MX_GPIO_Init(void)
          if(count < 6)
      	 {
      	  	 enter_passcode[count] = key;
-
      	  	 if(flag_new_pass)
      	  	 {
-     	  	     passcode[count]=key;
+     	  	     new_passcode[count]=key;
      	  	     if(count==5)
      	  	     {
      	  	    	Save_pass_to_flash();
      	  	    	flag_new_pass = 0;
      	  	     }
-
-
      	  	 }
      	  	    count++;
      	 }
      }
-
+     void Save_pass_to_flash()
+     {
+         Flash_Erase(Flash_save_pass);
+         for(int i = 0; i < 6; i++)
+         {
+        	 Flash_Write_2Byte(Flash_save_pass + i*2, new_passcode[i]);
+         }
+     }
+     void Read_pass_from_flash()
+	 {
+    	 for(int i = 0; i < 6; i++)
+    	 {
+    	     new_passcode[i] = Flash_Read_2Byte(Flash_save_pass + i*2 );
+    	 }
+	 }
      //--------------------------------------------
      // Change passcode if need.
      void Default_Change_Screen()
@@ -348,23 +363,46 @@ static void MX_GPIO_Init(void)
      void Check_Old_Passcode()
      {
      	 check_old = 1;
-     	 for(int i = 0; i < 6; i++)
+     	 if(Change_flag == 1)
      	 {
-     	 	 if(passcode[i] != enter_passcode[i])
-     	 	 {
-     	 		 check_old  =  0;
-     	 		 break;
-     	 	 }
-     	 	 else if(count < 5 || count > 6)
-     	 	 {
-     	 		 check_old = 0;
-     	 		 break;
-     	 	 }
-     	 	 else
-     	 	 {
-     	 		 check_old = 1;
-     	 	 }
+     		for(int i = 0; i < 6; i++)
+     		{
+     			if(new_passcode[i] != enter_passcode[i])
+     			{
+     				check_old  =  0;
+     				break;
+     			}
+     			else if(count < 5 || count > 6)
+     			{
+     				check_old = 0;
+     				break;
+     			}
+     			else
+     			{
+     				check_old = 1;
+     			}
+     		}
+     	 }else
+     	 {
+     		 for(int i = 0; i < 6; i++)
+     		 {
+     			 if(passcode[i] != enter_passcode[i])
+     			 {
+     				 check_old  =  0;
+     				 break;
+     			 }
+     			 else if(count < 5 || count > 6)
+     			 {
+     				 check_old = 0;
+     				 break;
+     			 }
+     			 else
+     			 {
+     				 check_old = 1;
+     			 }
+     		 }
      	 }
+
      	 if(check_old != 1)
      	 {
      		 LCD_Clear();
@@ -386,97 +424,98 @@ static void MX_GPIO_Init(void)
      		 x = 1; y = 2;
      		 count = 0;
      		 flag_new_pass = 1;
-
-
      	 }
-     }
-     void Save_pass_to_flash()
-     {
-    	 Flash_Erase(Flash_save_pass);
-    	 Flash_Write_2Byte(Flash_save_pass, new_passcode);
-     }
-     void Read_pass_from_flash()
-     {
-
      }
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.
      void Xu_Ly_Mat_Khau()
      {
      	 check = 1;
-     	 for(int i = 0; i < 6; i++)
+     	 if(Change_flag == 1)
      	 {
-     	 	 if(passcode[i] != enter_passcode[i])
-     	 	 {
-     	 	  	check  =  0;
-     	 	  	break;
-     	 	  	}if(count < 5 || count > 6){
-     	 	  		   check = 0;
-     	 	  		   break;
-     	 	  		   }
+     		for(int i = 0; i < 6; i++)
+     		{
+     			if(new_passcode[i] != enter_passcode[i])
+     			{
+     				check  =  0;
+     				break;
+     			}
+     			if(count < 5 || count > 6)
+     			{
+     				check = 0;
+     				break;
+     			}
+     		}
+     	 }else
+     	 {
+     		 for(int i = 0; i < 6; i++)
+     		 {
+     			 if(passcode[i] != enter_passcode[i])
+     			 {
+     				 check  =  0;
+     				 break;
+     			 }
+     			 if(count < 5 || count > 6)
+     			 {
+     				 check = 0;
+     				 break;
+     			 }
+     		 }
      	 }
      	  //IF PASSCODE FALSE => ANNOUNCE AND CLOSE THE DOOR.
      	 if(check != 1)
      	 {
-     	 	  		LCD_Clear();
-     	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 1);
-     	 	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 1);
-     	 	  	    HAL_Delay(500);
-     	 	  	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 0);
-     	 	  	    LCD_SetCursor(0, 5);
-     	 	  	    LCD_Print("FAIL,");
-     	 	  		LCD_SetCursor(1, 1);
-     	 	  		LCD_Print("PLEASE AGAIN!");
-     	 	  		LCD_DisableCursorBlink();
-     	 	  		HAL_Delay(1000);
-     	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 0);
-     	 	  		False_Passcode--;
-     	 	  		if(False_Passcode == 0)
-     	 	  		{
-     	 	  			LCD_Clear();
-     	 	  			LCD_SetCursor(0, 0);
-     	 	  		    LCD_Print("WAITING FOR 30s");
-     	 	  		    HAL_Delay(30000);
-     	 	  		    False_Passcode = 3;
-     	 	  		}
-     	 	   		Reset_LCD();
-     	 	  	}
-     	 	  	//IF PASSCODE TRUE => OPEN THE DOOR.
-     	 	  	else
-     	 	  	{
-     	 	  		//turn on green LED.
-     	 	  	    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
-     	 	  		//Turn on sound open a door
-     	 	        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
-     	 	  		HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
-     	 	  		HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
-     	 	  	    HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
-     	 	  	    HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
-     	 	  	  	HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
-     	 	  	    HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
-     	 	  	  	HAL_Delay(100);
-     	 	  	    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
-     	 	  	    //Announce open the door.
-     	 	  		LCD_Clear();
-     	 	  		LCD_SetCursor(0, 2);
-     	 	  		LCD_Print("HiHi,SUCCESS!!");
-     	 	  		LCD_SetCursor(1, 3);
-     	 	  		LCD_Print("WELLCOME!!!");
-     	 	  		LCD_DisableCursorBlink();
-     	 	  		GPIOA -> BSRR = (1 << 3);
-     	 	  		HAL_Delay(6000);
-     	 	  		GPIOA -> BSRR = (1 << 19);
-     	 	  		GPIOB -> BSRR = (1 << 26);
-     	 	  		False_Passcode = 3;
-     	 	  		Reset_LCD();
-     	 	  	}
-     	 	  }
+     		 LCD_Clear();
+     		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 1);
+     		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 1);
+     		 HAL_Delay(500);
+     		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 0);
+     		 LCD_SetCursor(0, 5);
+     		 LCD_Print("FAIL,");
+     		 LCD_SetCursor(1, 1);
+     		 LCD_Print("PLEASE AGAIN!");
+     		 LCD_DisableCursorBlink();
+     		 HAL_Delay(1000);
+     		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 0);
+     		 False_Passcode--;
+     		 if(False_Passcode == 0)
+     		 {
+     			 LCD_Clear();
+     			 LCD_SetCursor(0, 0);
+     			 LCD_Print("WAITING FOR 30s");
+     			 HAL_Delay(30000);
+     			 False_Passcode = 3;
+     		 }
+     		 Reset_LCD();
+     	 }
+     	 //IF PASSCODE TRUE => OPEN THE DOOR.
+     	 else
+     	 {
+     		 //turn on green LED.
+     		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
+     		 //Turn on sound open a door
+     		 for(int i=0; i<4; i++)
+     		 {
+     			 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
+     			 HAL_Delay(100);
+     			 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
+     			 HAL_Delay(100);
+     		 }
+     		 //Announce open the door.
+     		 LCD_Clear();
+     		 LCD_SetCursor(0, 2);
+     		 LCD_Print("HiHi,SUCCESS!!");
+     		 LCD_SetCursor(1, 3);
+     		 LCD_Print("WELLCOME!!!");
+     		 LCD_DisableCursorBlink();
+     		 GPIOA -> BSRR = (1 << 3);
+     		 HAL_Delay(6000);
+     		 GPIOA -> BSRR = (1 << 19);
+     		 GPIOB -> BSRR = (1 << 26);
+     		 False_Passcode = 3;
+     		 Reset_LCD();
+     	 }
+     }
 
      //CHECK KEYPAD-----------------------------------------------
      int KeyPad()
