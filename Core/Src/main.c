@@ -64,14 +64,15 @@ static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 void Reset_LCD();
-void Read_Keypad(int key);\
+void Read_Keypad(int key);
 void Enter_Old_Passcode();
 void Change_Passcode();
 void Default_Change_Screen();
 void Check_Old_Passcode();
+void Successful_change_screen();
 void Xu_Ly_Mat_Khau();
 void Save_new_pass();
-int KeyPad();
+int  KeyPad();
 void Save_pass_to_flash();
 void Read_pass_from_flash();
 /* USER CODE END PFP */
@@ -426,6 +427,15 @@ static void MX_GPIO_Init(void)
      		 flag_new_pass = 1;
      	 }
      }
+     void Successful_change_screen()
+     {
+    	 LCD_Clear();
+    	 LCD_SetCursor(0,1);
+    	 LCD_Print("Successful");
+    	 LCD_SetCursor(1,1);
+    	 LCD_Print("Change passcode!");
+    	 HAL_Delay(300);
+     }
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.
      void Xu_Ly_Mat_Khau()
@@ -649,6 +659,7 @@ static void MX_GPIO_Init(void)
     	 {
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     		 {
+    			 HAL_Delay(130);
     			 LCD_SetCursor(x, y);
     			 LCD_CursorBlink();
     			 LCD_Print("9");
@@ -714,6 +725,12 @@ static void MX_GPIO_Init(void)
     			 if(Check_Mode == 1)
     			 {
     				 Check_Old_Passcode();
+    				 Check_Mode = 0;
+    				 flag_new_pass = 2;
+    			 }
+    			 if(flag_new_pass == 2)
+    			 {
+
     			 }
     		 }
     	 }
