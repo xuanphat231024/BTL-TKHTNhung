@@ -725,12 +725,11 @@ static void MX_GPIO_Init(void)
     			 if(Check_Mode == 1)
     			 {
     				 Check_Old_Passcode();
-    				 Check_Mode = 0;
     				 flag_new_pass = 2;
     			 }
     			 if(flag_new_pass == 2)
     			 {
-
+    				 Successful_change_screen();
     			 }
     		 }
     	 }
