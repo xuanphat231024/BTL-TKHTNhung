@@ -315,6 +315,7 @@ static void MX_GPIO_Init(void)
      	  	     {
      	  	    	Save_pass_to_flash();
      	  	    	flag_new_pass = 0;
+     	  	    	Check_Mode = 2;
      	  	     }
      	  	 }
      	  	    count++;
@@ -332,7 +333,7 @@ static void MX_GPIO_Init(void)
 	 {
     	 for(int i = 0; i < 6; i++)
     	 {
-    	     new_passcode[i] = Flash_Read_2Byte(Flash_save_pass + i*2 );
+    	     new_passcode[i] = Flash_Read_2Byte(Flash_save_pass + i*2);
     	 }
 	 }
      //--------------------------------------------
@@ -403,7 +404,6 @@ static void MX_GPIO_Init(void)
      			 }
      		 }
      	 }
-
      	 if(check_old != 1)
      	 {
      		 LCD_Clear();
@@ -430,11 +430,11 @@ static void MX_GPIO_Init(void)
      void Successful_change_screen()
      {
     	 LCD_Clear();
-    	 LCD_SetCursor(0,1);
-    	 LCD_Print("Successful");
-    	 LCD_SetCursor(1,1);
-    	 LCD_Print("Change passcode!");
-    	 HAL_Delay(300);
+    	 LCD_SetCursor(0,0);
+    	 LCD_Print("Successful to");
+    	 LCD_SetCursor(1,0);
+    	 LCD_Print("Change Passcode!");
+    	 HAL_Delay(1500);
      }
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.
@@ -537,7 +537,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 7 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -567,7 +567,7 @@ static void MX_GPIO_Init(void)
 
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     	 {
-    		 HAL_Delay(100);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -581,7 +581,7 @@ static void MX_GPIO_Init(void)
     	 // SYMBOL "*" BUTTON.
     	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -597,7 +597,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 8 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -611,7 +611,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 5 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -625,7 +625,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 2 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -639,7 +639,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 0 BUTTON.
     	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     	 {
-    		 HAL_Delay(100);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -657,9 +657,10 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 9 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     		 {
-    			 HAL_Delay(130);
+
     			 LCD_SetCursor(x, y);
     			 LCD_CursorBlink();
     			 LCD_Print("9");
@@ -671,7 +672,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 6 BUTTON.
     	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -685,7 +686,7 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 3 BUTTON.
     	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -699,7 +700,7 @@ static void MX_GPIO_Init(void)
     	 // SYMBOL "#" BUTTON.
     	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     		 {
     			 LCD_SetCursor(x, y);
@@ -715,28 +716,29 @@ static void MX_GPIO_Init(void)
     	 // ENTER FUNCTION BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     		 {
-    			 if(Check_Mode == 0)
+    			 switch(Check_Mode)
     			 {
+    			 case 0:
     				 Xu_Ly_Mat_Khau();
-    			 }
-    			 if(Check_Mode == 1)
-    			 {
+    				 break;
+    			 case 1:
     				 Check_Old_Passcode();
-    				 flag_new_pass = 2;
-    			 }
-    			 if(flag_new_pass == 2)
-    			 {
+    				 break;
+    			 case 2:
     				 Successful_change_screen();
+    				 Reset_LCD();
+    				 break;
     			 }
     		 }
+
     	 }
     	 // DELETE FUNCTION BUTTON
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == 0)
     		 {
     			 y = y - 1;
@@ -749,7 +751,7 @@ static void MX_GPIO_Init(void)
     	 //CHANGE FUNCTION BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     		 {
     			 Change_Passcode();
@@ -758,7 +760,7 @@ static void MX_GPIO_Init(void)
     	 // RETURN DEFAULT SCREEN WHEN BEGIN.
     	 if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     	 {
-    		 HAL_Delay(130);
+    		 HAL_Delay(140);
     		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0)
     		 {
     			 Reset_LCD();
