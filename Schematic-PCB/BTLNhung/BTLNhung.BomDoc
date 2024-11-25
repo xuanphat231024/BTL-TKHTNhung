@@ -1,0 +1,20 @@
+|RECORD=BOM|VERSION=6|FILENAME=D:\D. BTL\Schematic-PCB\BTLNhung\BTLNhung.BomDoc|KIND=ALTIUM_DESIGNER_LIVEBOM|DATE=25.11.2024|TIME=07:21:36|CURRENCY=USD|PRODUCTIONQUANTITY=1|PERUNITTARGETPRICE=0|PERUNITACTUALPRICE=0
+|RECORD=GeneralOptions|OPENEXPORTED=False|ADDTOPROJECT=False|FORCEFIT=False|NOTFITTED=False|TEMPLATEFILENAME=|BATCHMODE=0|SUPPLIERPRODQTY=0|SUPPLIERAUTOQTY=False|SUPPLIERUSECACHEDPRICING=False|SUPPLIERCURRENCY=|SOLUTIONSPERITEM=1|SUPPLIERSPERSOLUTION=1|DISPLAYTOTALROW=False|DISPLAYSUBTOTALSFORGROUPS=False|INCLUDEPCBPARAMETERS=False|INCLUDEDBPARAMETERS=False|INCLUDEVAULTPARAMETERS=False|INCLUDECLOUDPARAMETERS=False|INCLUDEDOCUMENTPARAMETERS=False|FILTEROUTRISKYSOLUTIONS=True|DESIGNATORGROUPING=No
+|RECORD=SortOrderOptions|SORTORDER=
+|RECORD=GroupOrderOptions|GROUPORDER=
+|RECORD=VisibleOrderOptions|VISIBLEORDER=Line #=100!Comment=100!Description=100!Designator=100!Quantity=100!Manufacturer 1=100!Manufacturer Part Number 1=100!Manufacturer Lifecycle 1=100!Supplier 1=100!Supplier Part Number 1=100!Supplier Unit Price 1=100!Supplier Subtotal 1=100
+|RECORD=VisibleOrderOptions2|BASEVIEW=Line #=-1!Comment=-1!Description=-1!Designator=-1!Quantity=-1!Manufacturer 1=-1!Manufacturer Part Number 1=-1!Manufacturer Lifecycle 1=-1!Supplier 1=-1!Supplier Part Number 1=-1!Supplier Unit Price 1=-1!Supplier Subtotal 1=-1|FLATVIEW=Line #=-1!Comment=-1!Description=-1!Designator=-1!Manufacturer 1=-1!Manufacturer Part Number 1=-1!Manufacturer Lifecycle 1=-1!Supplier 1=-1!Supplier Part Number 1=-1!Supplier Unit Price 1=-1!Supplier Subtotal 1=-1|CONSOLIDATEDVIEW=Line #=-1!Comment=-1!Description=-1!Designator=-1!Quantity=-1!Manufacturer 1=-1!Manufacturer Part Number 1=-1!Manufacturer Lifecycle 1=-1!Supplier 1=-1!Supplier Part Number 1=-1!Supplier Unit Price 1=-1!Supplier Subtotal 1=-1
+|RECORD=CustomColumns|CUSTOMCOLUMNS=
+|RECORD=ColumnsAliases|COLUMNSALIASES=Comment=Name
+|RECORD=FilterOptions|FILTER=
+|RECORD=CheckGroupCompParamsOptions|CHECKGROUPCOMPPARAMS=Comment=0,Description=0,Value=0,Footprint=1
+|RECORD=ManufacturerLinkOptions|MANUFACTURERLINKPARAMETERS=
+|RECORD=FavoriteSuppliers|PARTSOURCES=|SUPPLIERS=|USESUPPLIERORDER=False
+|RECORD=CheckOptions|CHECKLEVELS=
+|RECORD=ExternalCheckOptions|CHECKLEVELS=
+|RECORD=LineNumberingOptions|STARTVALUE=|INCREMENT=
+|RECORD=Catalog|DBLINKFILEPATH=
+|RECORD=CatalogItem|ITEMTYPE=Automatic-NonVault|UNIQUEID=Library.SchLib\LCD16x2A|DESIGNITEMID=LCD16x2A|ITEMSOURCE=Library.SchLib|STATUS=Unknown|DESCRIPTION=LCD dipslay 16 char, 2 line|USERCOMMENTS=LCD 16x2A|NOTE=|LINENUMBER=|SELECTEDPARAMETERSHASH="LCD 16x2A","LCD dipslay 16 char, 2 line",LCD16x2A|COMPONENTPARAMETERS="Comment=LCD 16x2A","Component Kind=Standard","Description=LCD dipslay 16 char, 2 line",Footprint=JP16-C1T,"Ibis Model=","Library Name=Library.SchLib","Library Reference=LCD16x2A",PCB3D=,"Pin Info=","Signal Integrity=",Simulation=,Value=LCD16x2A|CUSTOMPARAMETERS=
+|RECORD=PartChoiceGroups|GROUPBYFIELDCOUNT=0
+|RECORD=CatalogItem|ITEMTYPE=Automatic-NonVault|UNIQUEID=Library.SchLib\STM32_Bluepill|DESIGNITEMID=STM32_Bluepill|ITEMSOURCE=Library.SchLib|STATUS=Unknown|DESCRIPTION=|USERCOMMENTS=STM32_Bluepill|NOTE=|LINENUMBER=|SELECTEDPARAMETERSHASH=,STM32_Bluepill|COMPONENTPARAMETERS=Comment=STM32_Bluepill,"Component Kind=Standard",Description=,Footprint=STM32F103_BluePill,"Ibis Model=","Library Name=Library.SchLib","Library Reference=STM32_Bluepill",PCB3D=,"Pin Info=","Signal Integrity=",Simulation=|CUSTOMPARAMETERS=
+|RECORD=PartChoiceGroups|GROUPBYFIELDCOUNT=0
