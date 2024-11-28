@@ -41,6 +41,7 @@ uint8_t flag_new_pass = 0;  //
 uint8_t Change_flag = 0;
 uint8_t Value_check ;
 /* USER CODE END PTD */
+
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define Flash_save_pass 0x08007C3C
@@ -127,6 +128,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
    KeyPad();
   }

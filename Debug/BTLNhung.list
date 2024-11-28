@@ -525,10 +525,10 @@ int main(void)
  80003e0:	f000 f9c2 	bl	8000768 <Read_pass_from_flash>
   Reset_LCD();
  80003e4:	f000 f922 	bl	800062c <Reset_LCD>
-  /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
    KeyPad();
  80003e8:	f000 fbf6 	bl	8000bd8 <KeyPad>
