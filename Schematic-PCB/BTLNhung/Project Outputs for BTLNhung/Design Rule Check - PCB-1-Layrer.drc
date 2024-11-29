@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : D:\D. BTL\Schematic-PCB\BTLNhung\PCB-1-Layrer.PcbDoc
 Date     : 11/29/2024
-Time     : 8:37:00 PM
+Time     : 10:47:53 PM
 
 Processing Rule : Clearance Constraint (Gap=0.3mm) (All),(All)
 Rule Violations :0
@@ -197,4 +197,4 @@ Rule Violations :0
 
 Violations Detected : 149
 Waived Violations : 0
-Time Elapsed        : 00:00:00
+Time Elapsed        : 00:00:01
