@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=Reset Pin=C13-1
+Removed Pin From Net: NetName=GND Pin=C13-2
+Removed Pin From Net: NetName=GND Pin=SW17-1
+Removed Pin From Net: NetName=GND Pin=SW17-1
+Removed Pin From Net: NetName=Reset Pin=SW17-2
+Removed Pin From Net: NetName=Reset Pin=SW17-2
+Removed Member From Class: ClassName=BTLNhung-schematic Member=C13
+Removed Member From Class: ClassName=BTLNhung-schematic Member=SW17
