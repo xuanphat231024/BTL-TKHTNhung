@@ -478,17 +478,17 @@ static void MX_GPIO_Init(void)
      	 if(check != 1)
      	 {
      		 LCD_Clear();
-     		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 1);
      		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 1);
+     		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 1);
      		 HAL_Delay(500);
-     		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 0);
+     		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 0);
      		 LCD_SetCursor(0, 5);
      		 LCD_Print("FAIL,");
      		 LCD_SetCursor(1, 1);
      		 LCD_Print("PLEASE AGAIN!");
      		 LCD_DisableCursorBlink();
      		 HAL_Delay(1000);
-     		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 0);
+     		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 0);
      		 False_Passcode--;
      		 if(False_Passcode == 0)
      		 {
@@ -504,13 +504,13 @@ static void MX_GPIO_Init(void)
      	 else
      	 {
      		 //turn on green LED.
-     		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
+     		 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3, 1);
      		 //Turn on sound open a door
      		 for(int i=0; i<4; i++)
      		 {
-     			 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 1);
+     			 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11, 1);
      			 HAL_Delay(100);
-     			 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_2, 0);
+     			 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11, 0);
      			 HAL_Delay(100);
      		 }
      		 //Announce open the door.
@@ -520,10 +520,13 @@ static void MX_GPIO_Init(void)
      		 LCD_SetCursor(1, 3);
      		 LCD_Print("WELLCOME!!!");
      		 LCD_DisableCursorBlink();
-     		 GPIOA -> BSRR = (1 << 3);
+     		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
+
      		 HAL_Delay(6000);
-     		 GPIOA -> BSRR = (1 << 19);
-     		 GPIOB -> BSRR = (1 << 26);
+     		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 0);
+
+     		 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3, 0);
+
      		 False_Passcode = 3;
      		 Reset_LCD();
      	 }
@@ -532,10 +535,10 @@ static void MX_GPIO_Init(void)
      //CHECK KEYPAD-----------------------------------------------
      int KeyPad()
      {
-    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_8, 1);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_9|GPIO_PIN_8, 1);
     	 //SCAN COLUMN 1.
     	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, 0);
-    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_8|GPIO_PIN_3, 1);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_8|GPIO_PIN_9, 1);
     	 // NUMBER 7 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
@@ -595,7 +598,7 @@ static void MX_GPIO_Init(void)
     	 //------------------------------------------------------------
     	 // SCAN COLUMN 2
     	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, 0);
-    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_3, 1);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_9, 1);
     	 // NUMBER 8 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
@@ -655,7 +658,7 @@ static void MX_GPIO_Init(void)
     	 //-------------------------------------------------------------
     	 // SCAN COLUMN 3.
     	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
-    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3, 1);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_9, 1);
     	 // NUMBER 9 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
@@ -713,7 +716,7 @@ static void MX_GPIO_Init(void)
     	 }
     	 //-------------------------------------------------------------
     	 // SCAN COLUMN 4, IT'S FUNCTION BUTTON.
-    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+    	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, 0);
     	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_8	, 1);
     	 // ENTER FUNCTION BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)

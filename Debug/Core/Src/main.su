@@ -11,5 +11,5 @@
 ../Core/Src/main.c:367:11:Check_Old_Passcode	16	static
 ../Core/Src/main.c:432:11:Successful_change_screen	8	static
 ../Core/Src/main.c:443:11:Xu_Ly_Mat_Khau	24	static
-../Core/Src/main.c:533:10:KeyPad	8	static
-../Core/Src/main.c:780:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:536:10:KeyPad	8	static
+../Core/Src/main.c:783:6:Error_Handler	4	static,ignoring_inline_asm

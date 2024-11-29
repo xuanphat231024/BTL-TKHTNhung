@@ -12,12 +12,12 @@
 #include <stdint.h>
 
 // Định nghĩa các chân kết nối với LCD
-#define RS_PIN GPIO_PIN_0
-#define EN_PIN GPIO_PIN_1
-#define D4_PIN GPIO_PIN_4
-#define D5_PIN GPIO_PIN_5
-#define D6_PIN GPIO_PIN_6
-#define D7_PIN GPIO_PIN_7
+#define RS_PIN GPIO_PIN_7
+#define EN_PIN GPIO_PIN_6
+#define D4_PIN GPIO_PIN_5
+#define D5_PIN GPIO_PIN_4
+#define D6_PIN GPIO_PIN_1
+#define D7_PIN GPIO_PIN_0
 #define LCD_PORT GPIOA
 
 // Khai báo các hàm điều khiển LCD

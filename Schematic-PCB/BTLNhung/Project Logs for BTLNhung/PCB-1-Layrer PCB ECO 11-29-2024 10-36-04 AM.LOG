@@ -1,0 +1,12 @@
+Added Pin To Net: NetName=PA2_RED Pin=LED1-1
+Added Pin To Net: NetName=PA2_RED Pin=U3-7
+Added Net: Name=PA2_RED
+Added Pin To Net: NetName=PA3_GREEN Pin=LED2-1
+Added Pin To Net: NetName=PA3_GREEN Pin=U3-8
+Added Net: Name=PA3_GREEN
+Added Pin To Net: NetName=PB10_LOCK Pin=R5-2
+Added Pin To Net: NetName=PB10_LOCK Pin=U3-15
+Added Net: Name=PB10_LOCK
+Added Pin To Net: NetName=PB11_BUZZER Pin=R6-2
+Added Pin To Net: NetName=PB11_BUZZER Pin=U3-16
+Added Net: Name=PB11_BUZZER
