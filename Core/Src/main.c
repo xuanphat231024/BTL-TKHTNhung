@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "LCD.h"
@@ -66,13 +65,11 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 void Reset_LCD();
 void Read_Keypad(int key);
-void Enter_Old_Passcode();
 void Change_Passcode();
 void Default_Change_Screen();
 void Check_Old_Passcode();
 void Successful_change_screen();
 void Xu_Ly_Mat_Khau();
-void Save_new_pass();
 int  KeyPad();
 void Save_pass_to_flash();
 void Read_pass_from_flash();
@@ -440,7 +437,7 @@ static void MX_GPIO_Init(void)
      }
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.
-     void Xu_Ly_Mat_Khau()
+     void Check_passcode()
      {
      	 check = 1;
      	 if(Change_flag == 1)
@@ -515,9 +512,9 @@ static void MX_GPIO_Init(void)
      		 }
      		 //Announce open the door.
      		 LCD_Clear();
-     		 LCD_SetCursor(0, 2);
+     		 LCD_SetCursor(0, 1);
      		 LCD_Print("HiHi,SUCCESS!!");
-     		 LCD_SetCursor(1, 3);
+     		 LCD_SetCursor(1, 2);
      		 LCD_Print("WELLCOME!!!");
      		 LCD_DisableCursorBlink();
      		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
@@ -727,7 +724,7 @@ static void MX_GPIO_Init(void)
     			 switch(Check_Mode)
     			 {
     			 case 0:
-    				 Xu_Ly_Mat_Khau();
+    				 Check_passcode();
     				 break;
     			 case 1:
     				 Check_Old_Passcode();

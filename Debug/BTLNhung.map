@@ -2752,9 +2752,9 @@ LOAD C:/ST/STM32CubeIDE_1.16.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .text.Successful_change_screen
                 0x08000990       0x38 ./Core/Src/main.o
                 0x08000990                Successful_change_screen
- .text.Xu_Ly_Mat_Khau
+ .text.Check_passcode
                 0x080009c8      0x21c ./Core/Src/main.o
-                0x080009c8                Xu_Ly_Mat_Khau
+                0x080009c8                Check_passcode
  .text.KeyPad   0x08000be4      0x5c4 ./Core/Src/main.o
                 0x08000be4                KeyPad
  .text.Error_Handler

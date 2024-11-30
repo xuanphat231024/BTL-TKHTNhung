@@ -1473,72 +1473,72 @@ static void MX_GPIO_Init(void)
  80009c0:	08002c60 	.word	0x08002c60
  80009c4:	08002c70 	.word	0x08002c70
 
-080009c8 <Xu_Ly_Mat_Khau>:
+080009c8 <Check_passcode>:
      //---------------------------------------------
      //CHECK PASSCODE to OPEN THE DOOR.
-     void Xu_Ly_Mat_Khau()
+     void Check_passcode()
      {
  80009c8:	b580      	push	{r7, lr}
  80009ca:	b084      	sub	sp, #16
  80009cc:	af00      	add	r7, sp, #0
      	 check = 1;
- 80009ce:	4b77      	ldr	r3, [pc, #476]	@ (8000bac <Xu_Ly_Mat_Khau+0x1e4>)
+ 80009ce:	4b77      	ldr	r3, [pc, #476]	@ (8000bac <Check_passcode+0x1e4>)
  80009d0:	2201      	movs	r2, #1
  80009d2:	701a      	strb	r2, [r3, #0]
      	 if(Change_flag == 1)
- 80009d4:	4b76      	ldr	r3, [pc, #472]	@ (8000bb0 <Xu_Ly_Mat_Khau+0x1e8>)
+ 80009d4:	4b76      	ldr	r3, [pc, #472]	@ (8000bb0 <Check_passcode+0x1e8>)
  80009d6:	781b      	ldrb	r3, [r3, #0]
  80009d8:	2b01      	cmp	r3, #1
- 80009da:	d123      	bne.n	8000a24 <Xu_Ly_Mat_Khau+0x5c>
+ 80009da:	d123      	bne.n	8000a24 <Check_passcode+0x5c>
      	 {
      		for(int i = 0; i < 6; i++)
  80009dc:	2300      	movs	r3, #0
  80009de:	60fb      	str	r3, [r7, #12]
- 80009e0:	e01c      	b.n	8000a1c <Xu_Ly_Mat_Khau+0x54>
+ 80009e0:	e01c      	b.n	8000a1c <Check_passcode+0x54>
      		{
      			if(new_passcode[i] != enter_passcode[i])
- 80009e2:	4a74      	ldr	r2, [pc, #464]	@ (8000bb4 <Xu_Ly_Mat_Khau+0x1ec>)
+ 80009e2:	4a74      	ldr	r2, [pc, #464]	@ (8000bb4 <Check_passcode+0x1ec>)
  80009e4:	68fb      	ldr	r3, [r7, #12]
  80009e6:	4413      	add	r3, r2
  80009e8:	781a      	ldrb	r2, [r3, #0]
- 80009ea:	4973      	ldr	r1, [pc, #460]	@ (8000bb8 <Xu_Ly_Mat_Khau+0x1f0>)
+ 80009ea:	4973      	ldr	r1, [pc, #460]	@ (8000bb8 <Check_passcode+0x1f0>)
  80009ec:	68fb      	ldr	r3, [r7, #12]
  80009ee:	440b      	add	r3, r1
  80009f0:	781b      	ldrb	r3, [r3, #0]
  80009f2:	429a      	cmp	r2, r3
- 80009f4:	d003      	beq.n	80009fe <Xu_Ly_Mat_Khau+0x36>
+ 80009f4:	d003      	beq.n	80009fe <Check_passcode+0x36>
      			{
      				check  =  0;
- 80009f6:	4b6d      	ldr	r3, [pc, #436]	@ (8000bac <Xu_Ly_Mat_Khau+0x1e4>)
+ 80009f6:	4b6d      	ldr	r3, [pc, #436]	@ (8000bac <Check_passcode+0x1e4>)
  80009f8:	2200      	movs	r2, #0
  80009fa:	701a      	strb	r2, [r3, #0]
      				break;
- 80009fc:	e035      	b.n	8000a6a <Xu_Ly_Mat_Khau+0xa2>
+ 80009fc:	e035      	b.n	8000a6a <Check_passcode+0xa2>
      			}
      			if(count < 5 || count > 6)
- 80009fe:	4b6f      	ldr	r3, [pc, #444]	@ (8000bbc <Xu_Ly_Mat_Khau+0x1f4>)
+ 80009fe:	4b6f      	ldr	r3, [pc, #444]	@ (8000bbc <Check_passcode+0x1f4>)
  8000a00:	781b      	ldrb	r3, [r3, #0]
  8000a02:	2b04      	cmp	r3, #4
- 8000a04:	d903      	bls.n	8000a0e <Xu_Ly_Mat_Khau+0x46>
- 8000a06:	4b6d      	ldr	r3, [pc, #436]	@ (8000bbc <Xu_Ly_Mat_Khau+0x1f4>)
+ 8000a04:	d903      	bls.n	8000a0e <Check_passcode+0x46>
+ 8000a06:	4b6d      	ldr	r3, [pc, #436]	@ (8000bbc <Check_passcode+0x1f4>)
  8000a08:	781b      	ldrb	r3, [r3, #0]
  8000a0a:	2b06      	cmp	r3, #6
- 8000a0c:	d903      	bls.n	8000a16 <Xu_Ly_Mat_Khau+0x4e>
+ 8000a0c:	d903      	bls.n	8000a16 <Check_passcode+0x4e>
      			{
      				check = 0;
- 8000a0e:	4b67      	ldr	r3, [pc, #412]	@ (8000bac <Xu_Ly_Mat_Khau+0x1e4>)
+ 8000a0e:	4b67      	ldr	r3, [pc, #412]	@ (8000bac <Check_passcode+0x1e4>)
  8000a10:	2200      	movs	r2, #0
  8000a12:	701a      	strb	r2, [r3, #0]
      				break;
- 8000a14:	e029      	b.n	8000a6a <Xu_Ly_Mat_Khau+0xa2>
+ 8000a14:	e029      	b.n	8000a6a <Check_passcode+0xa2>
      		for(int i = 0; i < 6; i++)
  8000a16:	68fb      	ldr	r3, [r7, #12]
  8000a18:	3301      	adds	r3, #1
  8000a1a:	60fb      	str	r3, [r7, #12]
  8000a1c:	68fb      	ldr	r3, [r7, #12]
  8000a1e:	2b05      	cmp	r3, #5
- 8000a20:	dddf      	ble.n	80009e2 <Xu_Ly_Mat_Khau+0x1a>
- 8000a22:	e022      	b.n	8000a6a <Xu_Ly_Mat_Khau+0xa2>
+ 8000a20:	dddf      	ble.n	80009e2 <Check_passcode+0x1a>
+ 8000a22:	e022      	b.n	8000a6a <Check_passcode+0xa2>
      			}
      		}
      	 }else
@@ -1546,71 +1546,71 @@ static void MX_GPIO_Init(void)
      		 for(int i = 0; i < 6; i++)
  8000a24:	2300      	movs	r3, #0
  8000a26:	60bb      	str	r3, [r7, #8]
- 8000a28:	e01c      	b.n	8000a64 <Xu_Ly_Mat_Khau+0x9c>
+ 8000a28:	e01c      	b.n	8000a64 <Check_passcode+0x9c>
      		 {
      			 if(passcode[i] != enter_passcode[i])
- 8000a2a:	4a65      	ldr	r2, [pc, #404]	@ (8000bc0 <Xu_Ly_Mat_Khau+0x1f8>)
+ 8000a2a:	4a65      	ldr	r2, [pc, #404]	@ (8000bc0 <Check_passcode+0x1f8>)
  8000a2c:	68bb      	ldr	r3, [r7, #8]
  8000a2e:	4413      	add	r3, r2
  8000a30:	781a      	ldrb	r2, [r3, #0]
- 8000a32:	4961      	ldr	r1, [pc, #388]	@ (8000bb8 <Xu_Ly_Mat_Khau+0x1f0>)
+ 8000a32:	4961      	ldr	r1, [pc, #388]	@ (8000bb8 <Check_passcode+0x1f0>)
  8000a34:	68bb      	ldr	r3, [r7, #8]
  8000a36:	440b      	add	r3, r1
  8000a38:	781b      	ldrb	r3, [r3, #0]
  8000a3a:	429a      	cmp	r2, r3
- 8000a3c:	d003      	beq.n	8000a46 <Xu_Ly_Mat_Khau+0x7e>
+ 8000a3c:	d003      	beq.n	8000a46 <Check_passcode+0x7e>
      			 {
      				 check  =  0;
- 8000a3e:	4b5b      	ldr	r3, [pc, #364]	@ (8000bac <Xu_Ly_Mat_Khau+0x1e4>)
+ 8000a3e:	4b5b      	ldr	r3, [pc, #364]	@ (8000bac <Check_passcode+0x1e4>)
  8000a40:	2200      	movs	r2, #0
  8000a42:	701a      	strb	r2, [r3, #0]
      				 break;
- 8000a44:	e011      	b.n	8000a6a <Xu_Ly_Mat_Khau+0xa2>
+ 8000a44:	e011      	b.n	8000a6a <Check_passcode+0xa2>
      			 }
      			 if(count < 5 || count > 6)
- 8000a46:	4b5d      	ldr	r3, [pc, #372]	@ (8000bbc <Xu_Ly_Mat_Khau+0x1f4>)
+ 8000a46:	4b5d      	ldr	r3, [pc, #372]	@ (8000bbc <Check_passcode+0x1f4>)
  8000a48:	781b      	ldrb	r3, [r3, #0]
  8000a4a:	2b04      	cmp	r3, #4
- 8000a4c:	d903      	bls.n	8000a56 <Xu_Ly_Mat_Khau+0x8e>
- 8000a4e:	4b5b      	ldr	r3, [pc, #364]	@ (8000bbc <Xu_Ly_Mat_Khau+0x1f4>)
+ 8000a4c:	d903      	bls.n	8000a56 <Check_passcode+0x8e>
+ 8000a4e:	4b5b      	ldr	r3, [pc, #364]	@ (8000bbc <Check_passcode+0x1f4>)
  8000a50:	781b      	ldrb	r3, [r3, #0]
  8000a52:	2b06      	cmp	r3, #6
- 8000a54:	d903      	bls.n	8000a5e <Xu_Ly_Mat_Khau+0x96>
+ 8000a54:	d903      	bls.n	8000a5e <Check_passcode+0x96>
      			 {
      				 check = 0;
- 8000a56:	4b55      	ldr	r3, [pc, #340]	@ (8000bac <Xu_Ly_Mat_Khau+0x1e4>)
+ 8000a56:	4b55      	ldr	r3, [pc, #340]	@ (8000bac <Check_passcode+0x1e4>)
  8000a58:	2200      	movs	r2, #0
  8000a5a:	701a      	strb	r2, [r3, #0]
      				 break;
- 8000a5c:	e005      	b.n	8000a6a <Xu_Ly_Mat_Khau+0xa2>
+ 8000a5c:	e005      	b.n	8000a6a <Check_passcode+0xa2>
      		 for(int i = 0; i < 6; i++)
  8000a5e:	68bb      	ldr	r3, [r7, #8]
  8000a60:	3301      	adds	r3, #1
  8000a62:	60bb      	str	r3, [r7, #8]
  8000a64:	68bb      	ldr	r3, [r7, #8]
  8000a66:	2b05      	cmp	r3, #5
- 8000a68:	dddf      	ble.n	8000a2a <Xu_Ly_Mat_Khau+0x62>
+ 8000a68:	dddf      	ble.n	8000a2a <Check_passcode+0x62>
      			 }
      		 }
      	 }
      	  //IF PASSCODE FALSE => ANNOUNCE AND CLOSE THE DOOR.
      	 if(check != 1)
- 8000a6a:	4b50      	ldr	r3, [pc, #320]	@ (8000bac <Xu_Ly_Mat_Khau+0x1e4>)
+ 8000a6a:	4b50      	ldr	r3, [pc, #320]	@ (8000bac <Check_passcode+0x1e4>)
  8000a6c:	781b      	ldrb	r3, [r3, #0]
  8000a6e:	2b01      	cmp	r3, #1
- 8000a70:	d04c      	beq.n	8000b0c <Xu_Ly_Mat_Khau+0x144>
+ 8000a70:	d04c      	beq.n	8000b0c <Check_passcode+0x144>
      	 {
      		 LCD_Clear();
  8000a72:	f7ff fc29 	bl	80002c8 <LCD_Clear>
      		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 1);
  8000a76:	2201      	movs	r2, #1
  8000a78:	2104      	movs	r1, #4
- 8000a7a:	4852      	ldr	r0, [pc, #328]	@ (8000bc4 <Xu_Ly_Mat_Khau+0x1fc>)
+ 8000a7a:	4852      	ldr	r0, [pc, #328]	@ (8000bc4 <Check_passcode+0x1fc>)
  8000a7c:	f001 f945 	bl	8001d0a <HAL_GPIO_WritePin>
      		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 1);
  8000a80:	2201      	movs	r2, #1
  8000a82:	f44f 6100 	mov.w	r1, #2048	@ 0x800
- 8000a86:	4850      	ldr	r0, [pc, #320]	@ (8000bc8 <Xu_Ly_Mat_Khau+0x200>)
+ 8000a86:	4850      	ldr	r0, [pc, #320]	@ (8000bc8 <Check_passcode+0x200>)
  8000a88:	f001 f93f 	bl	8001d0a <HAL_GPIO_WritePin>
      		 HAL_Delay(500);
  8000a8c:	f44f 70fa 	mov.w	r0, #500	@ 0x1f4
@@ -1618,21 +1618,21 @@ static void MX_GPIO_Init(void)
      		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, 0);
  8000a94:	2200      	movs	r2, #0
  8000a96:	f44f 6100 	mov.w	r1, #2048	@ 0x800
- 8000a9a:	484b      	ldr	r0, [pc, #300]	@ (8000bc8 <Xu_Ly_Mat_Khau+0x200>)
+ 8000a9a:	484b      	ldr	r0, [pc, #300]	@ (8000bc8 <Check_passcode+0x200>)
  8000a9c:	f001 f935 	bl	8001d0a <HAL_GPIO_WritePin>
      		 LCD_SetCursor(0, 5);
  8000aa0:	2105      	movs	r1, #5
  8000aa2:	2000      	movs	r0, #0
  8000aa4:	f7ff fc1a 	bl	80002dc <LCD_SetCursor>
      		 LCD_Print("FAIL,");
- 8000aa8:	4848      	ldr	r0, [pc, #288]	@ (8000bcc <Xu_Ly_Mat_Khau+0x204>)
+ 8000aa8:	4848      	ldr	r0, [pc, #288]	@ (8000bcc <Check_passcode+0x204>)
  8000aaa:	f7ff fbf8 	bl	800029e <LCD_Print>
      		 LCD_SetCursor(1, 1);
  8000aae:	2101      	movs	r1, #1
  8000ab0:	2001      	movs	r0, #1
  8000ab2:	f7ff fc13 	bl	80002dc <LCD_SetCursor>
      		 LCD_Print("PLEASE AGAIN!");
- 8000ab6:	4846      	ldr	r0, [pc, #280]	@ (8000bd0 <Xu_Ly_Mat_Khau+0x208>)
+ 8000ab6:	4846      	ldr	r0, [pc, #280]	@ (8000bd0 <Check_passcode+0x208>)
  8000ab8:	f7ff fbf1 	bl	800029e <LCD_Print>
      		 LCD_DisableCursorBlink();
  8000abc:	f7ff fc31 	bl	8000322 <LCD_DisableCursorBlink>
@@ -1642,20 +1642,20 @@ static void MX_GPIO_Init(void)
      		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, 0);
  8000ac8:	2200      	movs	r2, #0
  8000aca:	2104      	movs	r1, #4
- 8000acc:	483d      	ldr	r0, [pc, #244]	@ (8000bc4 <Xu_Ly_Mat_Khau+0x1fc>)
+ 8000acc:	483d      	ldr	r0, [pc, #244]	@ (8000bc4 <Check_passcode+0x1fc>)
  8000ace:	f001 f91c 	bl	8001d0a <HAL_GPIO_WritePin>
      		 False_Passcode--;
- 8000ad2:	4b40      	ldr	r3, [pc, #256]	@ (8000bd4 <Xu_Ly_Mat_Khau+0x20c>)
+ 8000ad2:	4b40      	ldr	r3, [pc, #256]	@ (8000bd4 <Check_passcode+0x20c>)
  8000ad4:	781b      	ldrb	r3, [r3, #0]
  8000ad6:	3b01      	subs	r3, #1
  8000ad8:	b2da      	uxtb	r2, r3
- 8000ada:	4b3e      	ldr	r3, [pc, #248]	@ (8000bd4 <Xu_Ly_Mat_Khau+0x20c>)
+ 8000ada:	4b3e      	ldr	r3, [pc, #248]	@ (8000bd4 <Check_passcode+0x20c>)
  8000adc:	701a      	strb	r2, [r3, #0]
      		 if(False_Passcode == 0)
- 8000ade:	4b3d      	ldr	r3, [pc, #244]	@ (8000bd4 <Xu_Ly_Mat_Khau+0x20c>)
+ 8000ade:	4b3d      	ldr	r3, [pc, #244]	@ (8000bd4 <Check_passcode+0x20c>)
  8000ae0:	781b      	ldrb	r3, [r3, #0]
  8000ae2:	2b00      	cmp	r3, #0
- 8000ae4:	d10f      	bne.n	8000b06 <Xu_Ly_Mat_Khau+0x13e>
+ 8000ae4:	d10f      	bne.n	8000b06 <Check_passcode+0x13e>
      		 {
      			 LCD_Clear();
  8000ae6:	f7ff fbef 	bl	80002c8 <LCD_Clear>
@@ -1664,13 +1664,13 @@ static void MX_GPIO_Init(void)
  8000aec:	2000      	movs	r0, #0
  8000aee:	f7ff fbf5 	bl	80002dc <LCD_SetCursor>
      			 LCD_Print("WAITING FOR 30s");
- 8000af2:	4839      	ldr	r0, [pc, #228]	@ (8000bd8 <Xu_Ly_Mat_Khau+0x210>)
+ 8000af2:	4839      	ldr	r0, [pc, #228]	@ (8000bd8 <Check_passcode+0x210>)
  8000af4:	f7ff fbd3 	bl	800029e <LCD_Print>
      			 HAL_Delay(30000);
  8000af8:	f247 5030 	movw	r0, #30000	@ 0x7530
  8000afc:	f000 fc62 	bl	80013c4 <HAL_Delay>
      			 False_Passcode = 3;
- 8000b00:	4b34      	ldr	r3, [pc, #208]	@ (8000bd4 <Xu_Ly_Mat_Khau+0x20c>)
+ 8000b00:	4b34      	ldr	r3, [pc, #208]	@ (8000bd4 <Check_passcode+0x20c>)
  8000b02:	2203      	movs	r2, #3
  8000b04:	701a      	strb	r2, [r3, #0]
      		 }
@@ -1682,20 +1682,20 @@ static void MX_GPIO_Init(void)
      		 Reset_LCD();
      	 }
      }
- 8000b0a:	e04b      	b.n	8000ba4 <Xu_Ly_Mat_Khau+0x1dc>
+ 8000b0a:	e04b      	b.n	8000ba4 <Check_passcode+0x1dc>
      		 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3, 1);
  8000b0c:	2201      	movs	r2, #1
  8000b0e:	2108      	movs	r1, #8
- 8000b10:	482c      	ldr	r0, [pc, #176]	@ (8000bc4 <Xu_Ly_Mat_Khau+0x1fc>)
+ 8000b10:	482c      	ldr	r0, [pc, #176]	@ (8000bc4 <Check_passcode+0x1fc>)
  8000b12:	f001 f8fa 	bl	8001d0a <HAL_GPIO_WritePin>
      		 for(int i=0; i<4; i++)
  8000b16:	2300      	movs	r3, #0
  8000b18:	607b      	str	r3, [r7, #4]
- 8000b1a:	e014      	b.n	8000b46 <Xu_Ly_Mat_Khau+0x17e>
+ 8000b1a:	e014      	b.n	8000b46 <Check_passcode+0x17e>
      			 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11, 1);
  8000b1c:	2201      	movs	r2, #1
  8000b1e:	f44f 6100 	mov.w	r1, #2048	@ 0x800
- 8000b22:	4829      	ldr	r0, [pc, #164]	@ (8000bc8 <Xu_Ly_Mat_Khau+0x200>)
+ 8000b22:	4829      	ldr	r0, [pc, #164]	@ (8000bc8 <Check_passcode+0x200>)
  8000b24:	f001 f8f1 	bl	8001d0a <HAL_GPIO_WritePin>
      			 HAL_Delay(100);
  8000b28:	2064      	movs	r0, #100	@ 0x64
@@ -1703,7 +1703,7 @@ static void MX_GPIO_Init(void)
      			 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_11, 0);
  8000b2e:	2200      	movs	r2, #0
  8000b30:	f44f 6100 	mov.w	r1, #2048	@ 0x800
- 8000b34:	4824      	ldr	r0, [pc, #144]	@ (8000bc8 <Xu_Ly_Mat_Khau+0x200>)
+ 8000b34:	4824      	ldr	r0, [pc, #144]	@ (8000bc8 <Check_passcode+0x200>)
  8000b36:	f001 f8e8 	bl	8001d0a <HAL_GPIO_WritePin>
      			 HAL_Delay(100);
  8000b3a:	2064      	movs	r0, #100	@ 0x64
@@ -1714,29 +1714,29 @@ static void MX_GPIO_Init(void)
  8000b44:	607b      	str	r3, [r7, #4]
  8000b46:	687b      	ldr	r3, [r7, #4]
  8000b48:	2b03      	cmp	r3, #3
- 8000b4a:	dde7      	ble.n	8000b1c <Xu_Ly_Mat_Khau+0x154>
+ 8000b4a:	dde7      	ble.n	8000b1c <Check_passcode+0x154>
      		 LCD_Clear();
  8000b4c:	f7ff fbbc 	bl	80002c8 <LCD_Clear>
-     		 LCD_SetCursor(0, 2);
- 8000b50:	2102      	movs	r1, #2
+     		 LCD_SetCursor(0, 1);
+ 8000b50:	2101      	movs	r1, #1
  8000b52:	2000      	movs	r0, #0
  8000b54:	f7ff fbc2 	bl	80002dc <LCD_SetCursor>
      		 LCD_Print("HiHi,SUCCESS!!");
- 8000b58:	4820      	ldr	r0, [pc, #128]	@ (8000bdc <Xu_Ly_Mat_Khau+0x214>)
+ 8000b58:	4820      	ldr	r0, [pc, #128]	@ (8000bdc <Check_passcode+0x214>)
  8000b5a:	f7ff fba0 	bl	800029e <LCD_Print>
-     		 LCD_SetCursor(1, 3);
- 8000b5e:	2103      	movs	r1, #3
+     		 LCD_SetCursor(1, 2);
+ 8000b5e:	2102      	movs	r1, #2
  8000b60:	2001      	movs	r0, #1
  8000b62:	f7ff fbbb 	bl	80002dc <LCD_SetCursor>
      		 LCD_Print("WELLCOME!!!");
- 8000b66:	481e      	ldr	r0, [pc, #120]	@ (8000be0 <Xu_Ly_Mat_Khau+0x218>)
+ 8000b66:	481e      	ldr	r0, [pc, #120]	@ (8000be0 <Check_passcode+0x218>)
  8000b68:	f7ff fb99 	bl	800029e <LCD_Print>
      		 LCD_DisableCursorBlink();
  8000b6c:	f7ff fbd9 	bl	8000322 <LCD_DisableCursorBlink>
      		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 1);
  8000b70:	2201      	movs	r2, #1
  8000b72:	f44f 6180 	mov.w	r1, #1024	@ 0x400
- 8000b76:	4814      	ldr	r0, [pc, #80]	@ (8000bc8 <Xu_Ly_Mat_Khau+0x200>)
+ 8000b76:	4814      	ldr	r0, [pc, #80]	@ (8000bc8 <Check_passcode+0x200>)
  8000b78:	f001 f8c7 	bl	8001d0a <HAL_GPIO_WritePin>
      		 HAL_Delay(6000);
  8000b7c:	f241 7070 	movw	r0, #6000	@ 0x1770
@@ -1744,15 +1744,15 @@ static void MX_GPIO_Init(void)
      		 HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10, 0);
  8000b84:	2200      	movs	r2, #0
  8000b86:	f44f 6180 	mov.w	r1, #1024	@ 0x400
- 8000b8a:	480f      	ldr	r0, [pc, #60]	@ (8000bc8 <Xu_Ly_Mat_Khau+0x200>)
+ 8000b8a:	480f      	ldr	r0, [pc, #60]	@ (8000bc8 <Check_passcode+0x200>)
  8000b8c:	f001 f8bd 	bl	8001d0a <HAL_GPIO_WritePin>
      		 HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3, 0);
  8000b90:	2200      	movs	r2, #0
  8000b92:	2108      	movs	r1, #8
- 8000b94:	480b      	ldr	r0, [pc, #44]	@ (8000bc4 <Xu_Ly_Mat_Khau+0x1fc>)
+ 8000b94:	480b      	ldr	r0, [pc, #44]	@ (8000bc4 <Check_passcode+0x1fc>)
  8000b96:	f001 f8b8 	bl	8001d0a <HAL_GPIO_WritePin>
      		 False_Passcode = 3;
- 8000b9a:	4b0e      	ldr	r3, [pc, #56]	@ (8000bd4 <Xu_Ly_Mat_Khau+0x20c>)
+ 8000b9a:	4b0e      	ldr	r3, [pc, #56]	@ (8000bd4 <Check_passcode+0x20c>)
  8000b9c:	2203      	movs	r2, #3
  8000b9e:	701a      	strb	r2, [r3, #0]
      		 Reset_LCD();
@@ -2481,8 +2481,8 @@ static void MX_GPIO_Init(void)
  80010ba:	e00a      	b.n	80010d2 <KeyPad+0x4ee>
     			 {
     			 case 0:
-    				 Xu_Ly_Mat_Khau();
- 80010bc:	f7ff fc84 	bl	80009c8 <Xu_Ly_Mat_Khau>
+    				 Check_passcode();
+ 80010bc:	f7ff fc84 	bl	80009c8 <Check_passcode>
     				 break;
  80010c0:	e007      	b.n	80010d2 <KeyPad+0x4ee>
     			 case 1:
