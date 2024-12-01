@@ -11,5 +11,5 @@
 ../Core/Src/main.c:364:11:Check_Old_Passcode	11
 ../Core/Src/main.c:429:11:Successful_change_screen	1
 ../Core/Src/main.c:440:11:Check_passcode	13
-../Core/Src/main.c:533:10:KeyPad	37
-../Core/Src/main.c:780:6:Error_Handler	1
+../Core/Src/main.c:533:10:KeyPad	36
+../Core/Src/main.c:779:6:Error_Handler	1
