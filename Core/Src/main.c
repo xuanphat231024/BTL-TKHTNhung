@@ -539,14 +539,16 @@ static void MX_GPIO_Init(void)
     	 // NUMBER 7 BUTTON.
     	 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
     	 {
-
-
+    		 HAL_Delay(130);
+    		 if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 0)
+    	     {
     			 LCD_SetCursor(x, y);
     			 LCD_CursorBlink();
     			 LCD_Print("7");
     			 key = 7;
     			 Read_Keypad(key);
     			 y = y + 1;
+    	     }
 
     	 }
     	 // NUMBER 4 BUTTON.
